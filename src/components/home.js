@@ -19,9 +19,22 @@ const post = [
   ];
   
   const Home = () => {
-    const [myPost, setMyPost] = useState (post);
+    const [myPost, setMyPost] = useState(post);
+    const [title, setTitle] = useState("");
 
-    console.log (myPost);
+    
+    const handleChange = (e) => {
+      setTitle(e.target.value) 
+    }
+
+    const addNote = () => { 
+      const newTodo = {
+        note: title,
+        id: uuidv4(),
+      }
+      setMyPost([...myPost, newTodo])
+      setTitle("")
+    }
 
   return (
       <div className= "container mt-3">
@@ -30,9 +43,9 @@ const post = [
           
         </section>
         <section>
-          <input className={styles.inputstyle} type="text" placeholder="Enter your note here..." ></input>
+          <input className={styles.inputstyle} type="text" onChange={handleChange} placeholder="Enter your note here..." ></input>
         </section>
-        <button className={styles.addbutton}> ADD </button>
+        <button className={styles.addbutton} onClick={addNote}> ADD </button> 
 
         <div className={styles.dummytext}> 
           {myPost.map (p => {
@@ -43,7 +56,9 @@ const post = [
                     <div className= "card-body">
                       <div className="d-flex justify-content-between">
                           {p.note}
-                          <button> Delete </button>
+                          <button onClick={() => {
+                            setMyPost([...myPost.filter(po => po.id !== p.id)])
+                          }}> Delete </button>
                       </div>
                     </div>
                   </div>
